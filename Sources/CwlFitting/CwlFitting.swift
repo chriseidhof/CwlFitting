@@ -19,28 +19,15 @@
 
 import SwiftUI
 
-public struct Fitting<Content: View>: View {
-	let content: Content
-	public init(_ content: Content) {
-		self.content = content
-	}
-	public var body: some View {
-		content
-			.environment(\.useFixedSizes, true)
-			.hidden()
-			.overlay(content.environment(\.useFixedSizes, false))
+public extension View {
+	@inlinable func fittingContent() -> FittingContent<Self> {
+		return FittingContent(self)
 	}
 }
 
-public struct FittingSpacer: View {
-	@Environment(\.useFixedSizes) var useFixedSizes: Bool
-	let minLength: Length?
-	public init(minLength: Length? = nil) {
-		self.minLength = minLength
-	}
-	public var body: some View {
-		Spacer(minLength: minLength)
-			.fixedSize(horizontal: useFixedSizes, vertical: useFixedSizes)
+public extension View {
+	@inlinable func fittingSize() -> ConditionallyFixedSize<Self> {
+		return ConditionallyFixedSize(self)
 	}
 }
 
@@ -52,5 +39,43 @@ public extension EnvironmentValues {
 	var useFixedSizes: Bool {
 		get { return self[UseFixedSizes.self] }
 		set { self[UseFixedSizes.self] = newValue }
+	}
+}
+
+@available(*, deprecated, message: "Use `fittingLayout()` on any self-sizing container view, instead.")
+public typealias Fitting = FittingContent
+
+public struct FittingContent<Content: View>: View {
+	public let content: Content
+	@inlinable public init(_ content: Content) {
+		self.content = content
+	}
+	public var body: some View {
+		content
+			.environment(\.useFixedSizes, true)
+			.hidden()
+			.overlay(content.environment(\.useFixedSizes, false))
+	}
+}
+
+public struct ConditionallyFixedSize<Content: View>: View {
+	@Environment(\.useFixedSizes) var useFixedSizes: Bool
+	public let content: Content
+	@inlinable public init(_ content: Content) {
+		self.content = content
+	}
+	public var body: some View {
+		content.fixedSize(horizontal: useFixedSizes, vertical: useFixedSizes)
+	}
+}
+
+@available(*, deprecated, message: "Use `Spacer().fittingSize()` instead.")
+public struct FittingSpacer: View {
+	let minLength: Length?
+	public init(minLength: Length? = nil) {
+		self.minLength = minLength
+	}
+	public var body: some View {
+		Spacer(minLength: minLength).fittingSize()
 	}
 }

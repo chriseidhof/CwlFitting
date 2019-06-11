@@ -1,8 +1,8 @@
 # CwlFitting
 
-It is difficult in SwiftUI to have a `VStack` or `HStack` shrink to the width or height, respectively, of its largest component but also have elements within each row that fill the available width of the `VStack` or `HStack`. This package provides an easy solution.
+It is difficult in SwiftUI to have a `VStack` or `HStack` shrink to the width or height, respectively, of its largest component but also have elements within each row fill the available width of the `VStack` or `HStack`. This package provides an easy solution.
 
-The `VStack` in Swift UI will let you build a column like the one pictured here:
+The `VStack` in SwiftUI will let you build a column like the one pictured here:
 
 ```swift
 VStack {
@@ -44,21 +44,21 @@ VStack {
 ------------------------------------------------------------*/
 ```
 
-The `Fitting` view in this package lets you build the following layout:
+CwlFitting introduces `fittingSize()`, a view transformation that conditionally applies `fixedSize()` to views, when the environment variable `useFixedSize` is `true`. Combined with the  `fittingContent()` transformation on a parent container, this allows subsets of your view tree to grow to fit allocated space, rather than growing to consume all available space:
 
 ```swift
-Fitting(VStack {
+VStack {
    HStack {
-      FittingSpacer()
+      Spacer().fittingSize()
       Text("Some Text")
-      FittingSpacer()
+      Spacer().fittingSize()
    }.background(Color.gray)
    HStack {
-      FittingSpacer()
+   Spacer().fittingSize()
       Text("Some Much Longer Text")
-      FittingSpacer()
+      Spacer().fittingSize()
    }.background(Color.gray)
-})
+}.fittingContent()
 
 /*-----------------------------------------------------------|
 | ============================                               |
@@ -69,22 +69,12 @@ Fitting(VStack {
 ------------------------------------------------------------*/
 ```
 
-## How does it work?!
-
-The key components are:
-
-1. A SwiftUI `EnvironmentValue` named `useFixedSizes` (a `Bool`) which, when `true` indicates that `fixedSize()` should be applied to flexible width items.
-2. A SwiftUI `View` named `FittingSpacer` which wraps `Spacer` and applies the `usedFixedSizes` logic to it.
-3. A SwiftUI `View` named `Fitting` which renders a provided content `View` twice, once with `useFixedSizes == true` but set to `hidden()` (to determine the dimensions) and once with `useFixedSizes == false` to render the real view and fill the layout.
-
-Look at the CwlFitting.swift file. It's literally shorter than this README.
-
 ## Usage
 
 Add:
 
-   https://github.com/mattgallagher/CwlFitting.git
+    https://github.com/mattgallagher/CwlFitting.git
 
-to your app project's list of packages. Put `import CwlFitting` at the top of your file, wrap your `HStack` or `VStack` in `Fitting()` and use `FittingSpacer` instead of `Spacer` inside.
+to your app project's list of packages.
 
-You can also add  `useFixedSizes` to your flexible width views (see how `FittingSpacer` is implemented).
+Put `import CwlFitting` at the top of your file. Apply `fittingContent()` to any `VStack` or `HStack` you want to use a fitting layout. Apply `fittingSize()` to any perpendicular `Spacer` within these layouts.
