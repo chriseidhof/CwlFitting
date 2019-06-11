@@ -1,6 +1,6 @@
 # CwlFitting
 
-It is difficult in SwiftUI to have a `VStack` or `HStack` shrink to the width or height, respectively, of its largest component but also have elements within each row fill the available width of the `VStack` or `HStack`. This package provides an easy solution.
+It is difficult in SwiftUI to have a `VStack` or `HStack` shrink to the width or height, respectively, of its largest component but also have elements within each row fill the allocated width or height, respectively, of the `VStack` or `HStack`. This package provides an easy solution.
 
 The `VStack` in SwiftUI will let you build a column like the one pictured here:
 

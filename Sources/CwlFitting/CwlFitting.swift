@@ -42,7 +42,7 @@ public extension EnvironmentValues {
 	}
 }
 
-@available(*, deprecated, message: "Use `fittingLayout()` on any self-sizing container view, instead.")
+@available(*, deprecated, message: "Use `fittingContent()` on any self-sizing container view, instead.")
 public typealias Fitting = FittingContent
 
 public struct FittingContent<Content: View>: View {
