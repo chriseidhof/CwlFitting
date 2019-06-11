@@ -78,3 +78,36 @@ Add:
 to your app project's list of packages.
 
 Put `import CwlFitting` at the top of your file. Apply `fittingContent()` to any `VStack` or `HStack` you want to use a fitting layout. Apply `fittingSize()` to any perpendicular `Spacer` within these layouts.
+
+## Sample
+
+![](https://user-images.githubusercontent.com/5382/59252515-85a2cf00-8c2c-11e9-88c8-9b4449b6d0cc.png)
+
+To achieve this, you can use the following code:
+
+```swift
+func item(_ text: Text) -> some View {
+    HStack {
+        Spacer().fittingSize()
+        text.color(.white)
+        Spacer().fittingSize()
+    }.padding().background(Color.blue.cornerRadius(10))
+}
+
+struct ContentView : View {
+    var body: some View {
+        return HStack(alignment: .top) {
+            VStack {
+                item(Text("Short"))
+                item(Text("The longest text."))
+                item(Text("Short"))
+            }.fittingContent()
+            VStack {
+                bodyText.lineLimit(nil)
+            }
+        }
+    }
+}
+
+let bodyText: Text = Text("It is difficult in SwiftUI to have a ") + Text("VStack").italic() + Text(" or ") + Text("HStack").italic() + Text(" shrink to the width or height, respectively, of its largest component but also have elements within each row fill the available width of the VStack or HStack. This package provides an easy solution.")
+```
